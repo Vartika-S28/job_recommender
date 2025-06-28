@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Recommender</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Recommendation System</h1>
+        <form method="POST" enctype="multipart/form-data">
+    <!-- Resume Upload -->
+    <label>Upload Resume (PDF only):</label>
+    <input type="file" name="resume">
+
+    <!-- OR separator -->
+    <div class="or-separator">
+        <span>OR</span>
+    </div>
+
+    <!-- Manual skill input -->
+    <label>Enter your skills:</label>
+    <input type="text" name="skills" placeholder="Python, SQL, Excel">
+
+    <button type="submit">Get Recommendations</button>
+</form>
+
+        {% if recommendations %}
+            <h2>Top Matching Jobs:</h2>
+            <ul>
+                {% for title, skills in recommendations %}
+                    <li><strong>{{ title }}</strong> — Required Skills: {{ skills }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
