@@ -178,25 +178,6 @@ pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:8000 app:app
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Flask Community**: For the excellent web framework
-- **Scikit-learn**: For powerful machine learning tools
-- **Google Fonts**: For beautiful typography
-- **CSS Community**: For modern styling techniques
-
 ## 📞 Support
 
 If you have any questions or need help:
