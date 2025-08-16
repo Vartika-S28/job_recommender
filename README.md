@@ -177,16 +177,3 @@ Example with Gunicorn:
 pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:8000 app:app
 ```
-
-## 📞 Support
-
-If you have any questions or need help:
-- Create an issue in the repository
-- Contact: [your-email@example.com]
-- Documentation: [Link to docs]
-
----
-
-**Made with ❤️ by [Your Name]**
-
-*Transform your job search with AI-powered recommendations!*
