@@ -2,37 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Job Recommender</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Recommender - Find Your Perfect Match</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Job Recommendation System</h1>
-        <form method="POST" enctype="multipart/form-data">
-    <!-- Resume Upload -->
-    <label>Upload Resume (PDF only):</label>
-    <input type="file" name="resume">
+    <div class="main-container">
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <div class="user-info">
+                👋 Welcome, {{ session.username }}!
+            </div>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
 
-    <!-- OR separator -->
-    <div class="or-separator">
-        <span>OR</span>
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Main Container -->
+            <div class="container">
+                <!-- Header -->
+                <div class="header">
+                    <h1>Job Recommender</h1>
+                    <p class="subtitle">Upload your resume or enter your skills to get personalized job recommendations powered by AI</p>
+                </div>
+
+                <!-- Main Form -->
+                <form method="POST" enctype="multipart/form-data" class="recommendation-form">
+                    <!-- Resume Upload Section -->
+                    <div class="form-group">
+                        <label for="resume">📄 Upload Your Resume (PDF)</label>
+                        <div class="file-upload">
+                            <input type="file" id="resume" name="resume" accept=".pdf">
+                            <label for="resume" class="file-upload-label">
+                                <span>📁 Choose PDF file or drag and drop here</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- OR Separator -->
+                    <div class="or-separator">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- Manual Skills Input -->
+                    <div class="form-group">
+                        <label for="skills">💼 Enter Your Skills</label>
+                        <input type="text" id="skills" name="skills" 
+                               placeholder="e.g., Python, SQL, Machine Learning, Data Analysis, Excel, JavaScript, React, Node.js" 
+                               value="{{ request.form.skills if request.form.skills else '' }}">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn">
+                        <span>🔍 Find My Perfect Job</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            {% if recommendations %}
+            <div class="container">
+                <div class="results-section">
+                    <h2 class="results-title">🎯 Your Top Job Matches</h2>
+                    <ul class="jobs-list">
+                        {% for title, skills in recommendations %}
+                        <li class="job-item">
+                            <div class="job-title">{{ title }}</div>
+                            <div class="job-skills">
+                                <strong>Required Skills:</strong> {{ skills }}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Help Section -->
+            <div class="container">
+                <div class="help-section">
+                    <h3>💡 How it works:</h3>
+                    <ul>
+                        <li>Upload your PDF resume for automatic skill extraction using advanced AI</li>
+                        <li>Or manually enter your key skills and technologies</li>
+                        <li>Our AI analyzes your profile and matches you with relevant jobs</li>
+                        <li>Get personalized recommendations based on skill similarity and industry trends</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Manual skill input -->
-    <label>Enter your skills:</label>
-    <input type="text" name="skills" placeholder="Python, SQL, Excel">
+    <script>
+        // File upload preview
+        document.getElementById('resume').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const label = document.querySelector('.file-upload-label span');
+            
+            if (file) {
+                label.textContent = `📄 ${file.name}`;
+                label.style.color = '#667eea';
+            } else {
+                label.textContent = '📁 Choose PDF file or drag and drop here';
+                label.style.color = '#718096';
+            }
+        });
 
-    <button type="submit">Get Recommendations</button>
-</form>
+        // Form submission loading state
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = document.querySelector('.btn span');
+            btn.innerHTML = '<span class="loading"></span> Finding jobs...';
+            document.querySelector('.btn').disabled = true;
+        });
 
-        {% if recommendations %}
-            <h2>Top Matching Jobs:</h2>
-            <ul>
-                {% for title, skills in recommendations %}
-                    <li><strong>{{ title }}</strong> — Required Skills: {{ skills }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+        // Auto-hide flash messages
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.remove();
+                }, 500);
+            });
+        }, 5000);
+    </script>
 </body>
 </html>

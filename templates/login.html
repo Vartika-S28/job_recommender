@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Job Recommender</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form method="POST">
-            <label for="username">Enter your name:</label><br>
-            <input type="text" name="username" required>
-            <button type="submit">Login</button>
-        </form>
+    <div class="main-container">
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Main Container -->
+            <div class="container">
+                <div class="header">
+                    <h1>Welcome Back</h1>
+                    <p class="subtitle">Sign in to access your personalized job recommendations powered by advanced AI</p>
+                </div>
+                
+                <form method="POST" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Your Name</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">
+                        <span>Get Started</span>
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 40px; color: #718096; font-size: 1rem; line-height: 1.8;">
+                    <p>🔍 AI-powered job matching</p>
+                    <p>📄 Upload your resume or enter skills</p>
+                    <p>🎯 Get personalized recommendations</p>
+                    <p>⚡ Instant results with advanced algorithms</p>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Auto-hide flash messages
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.remove();
+                }, 500);
+            });
+        }, 5000);
+    </script>
 </body>
 </html>
